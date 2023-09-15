@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Web;
+using RequestTimeLogger.Infraestructure.Middleware;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -32,8 +33,10 @@ try
 
 	app.UseHttpsRedirection();
 	app.UseStaticFiles();
-	
-	app.UseRouting();
+
+    app.UseMiddleware<RequestLoggerMiddleware>();
+
+    app.UseRouting();
 
 	app.UseAuthorization();
 
